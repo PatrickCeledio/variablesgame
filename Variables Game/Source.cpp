@@ -34,15 +34,22 @@ int main()
 	std::cout << "*********************************************************\n"
               << "You partied pretty hard last night, let's get some breakfast?\n"
 		      << "\n*********************************************************\n"
-		      << "1) Yes\n2) No\n3) Fuck you \n\n"
-		      << "Select your choice: ";
+		      << "1) Yes\n2) No\n3) Fuck you \n\n";
 
 	while (true)
 	{
 		switch (answer)
         {
             case 0:
+                std::cout << "Select your choice: ";
                 std::cin  >> answer;
+                if(std::cin.fail())
+                {
+                    std::cout << "That's not valid!\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                    answer = 0;
+                }
                 break;
 			case 1:
 			    {
