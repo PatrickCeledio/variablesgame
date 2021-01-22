@@ -1,111 +1,107 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-using namespace std;
-
+#include <array>
+#include <random>
+#include <limits>
 
 int main()
 {
 	// Char array to capture name; locked at 7 characters
+	std::default_random_engine eng(time(0));
 	char name[8];
-	int answer(0), health(99);
-	string food[5];
-	
-	
-	cout << "********************************************************\n"
-		 << "It's a Thursday morning and you finally wake up at home.\n"
-		 << "I forgot your name. What is it again?.. \n"
-		 << "********************************************************\n"
-		 << "Enter a name: ";
-	cin.getline(name, 8); 
+	int answer = 0, health = 70;
 
-	health -= 29;
-	cout << "\n***************************\n"
-		 << "Ah, right... Yes. " << name << "!\n"
-		 << "\n***************************\n"
-		 << "Press enter to continue...";
-	cin.ignore();
+	std::cout << "********************************************************\n"
+              << "It's a Thursday morning and you finally wake up at home.\n"
+              << "I forgot your name. What is it again?.. \n"
+		      << "********************************************************\n"
+		      << "Enter a name: ";
+	std::cin.getline(name, 8);
+
+	std::cout << "\n***************************\n"
+		      << "Ah, right... Yes. " << name << "!\n"
+              << "\n***************************\n"
+		      << "Press enter to continue...";
+    std::cin.ignore();
 	system("cls");
-	cout << "*********************************************************\n"
-		 << "Your health is currently at " << health << " out of 99......\n"
-		 << "\n*********************************************************\n"
-		 << "Press enter to continue...";
-	cin.ignore();
+	std::cout << "*********************************************************\n"
+              << "Your health is currently at " << health << " out of 70......\n"
+              << "\n*********************************************************\n"
+              << "Press enter to continue...";
+	std::cin.ignore();
 	system("cls");
-	cout << "*********************************************************\n"
-		 << "You partied pretty hard last night, let's get some breakfast?\n"
-		 << "\n*********************************************************\n"
-		 << "1) Yes\n2) No\n3) Fuck you \n\n"
-		 << "Select your choice: ";
-	cin  >> answer;
+	std::cout << "*********************************************************\n"
+              << "You partied pretty hard last night, let's get some breakfast?\n"
+		      << "\n*********************************************************\n"
+		      << "1) Yes\n2) No\n3) Fuck you \n\n";
 
 	while (true)
 	{
 		switch (answer)
-			{
-			case 1: 
-				cout << endl << name << " goes into the kitchen..\n"
-					 << "One by one, type and enter five foods or dishes you would like to eat. \n";
+        {
+            case 0:
+                std::cout << "Select your choice: ";
+                std::cin  >> answer;
+                if(std::cin.fail())
+                {
+                    std::cout << "That's not valid!\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                    answer = 0;
+                }
+                break;
+			case 1:
+			    {
+			        std::array<std::string,5> food;
 
-				for (int i = 0; i <= 5; i++)
-				{
-					if (i != 5)
-					{
+                    std::cout << std::endl << name << " goes into the kitchen..\n"
+                         << "One by one, type and enter five foods or dishes you would like to eat. \n";
 
-					int count = i + 1;
-					cout << "Food #" << count << ": ";
-					cin >> food[i];
-
-					}
-
-				}
-				return false; 
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        std::cout << "Food #" << i+1 << ": ";
+                        std::cin >> food[i];
+                    }
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+			    }
+			    answer = 0;
 				break;
-				
-
 			case 2:
-				cout << name << "\n decided to stay in their room..\n"
-					 << "You turned on your GameCube\n";
+				std::cout << name << "\n decided to stay in their room..\n"
+					      << "You turned on your GameCube\n";
 				break;
-
-			case 3: 
+			case 3:
 			{
-				int damage(0);
-				srand (time(NULL));
-				damage = rand() % 20000000 + 10000000;
 
-				cout << "\nYou dare insult the narrator?\n"
-					 <<	"Narrator performs Lightning Strike and deals indefinite damage!\n";
+				std::cout << "\nYou dare insult the narrator?\n"
+                          <<	"Narrator performs Lightning Strike and deals indefinite damage!\n";
+                std::uniform_real_distribution<double> urd(0,20000000);
+				int damage = int(urd(eng)) + 10000000;
 				health -= damage;
 				if (health <= 0)
 				{
-					cout << name << "'s health is at " << health << ". " 
-						 << name << " has fainted!\n\nGame Over\n";
-				} 
-				
+					std::cout << name << " reached 0!\n"
+						      << name << " has fainted!\n\nGame Over\n";
+				}
+
 				answer = 4;
 				break;
 			}
 
 			case 4:
-				cout << "Bye!";
-				return false;
-				break;
-
-			default: 
-				cout << answer << " is not valid.\n" << endl;
+				std::cout << "Bye!";
+				return 0;
+			default:
+				std::cout << answer << " is not valid.\n";
+				std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 		}
-
 	}
-
-	cout << "\n\nDEBUG:You are outside the switch statement.\n\n";
-	system("pause");
-	return 0; 
-
-
-
-
-
-
-
+	std::cout << "\n\nDEBUG:You are outside the switch statement.\n\n";
+	std::cin.clear();
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+	std::cin.get();
+	return 0;
 }
